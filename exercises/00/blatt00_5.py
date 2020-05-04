@@ -31,7 +31,7 @@ reelle Zahlen ohne ganze Zahlen 1
 def integer(l):
     counter = 0
     for i in l:
-        if i == int(i)
+        if i == int(i):
             counter += 1
     return counter
 
