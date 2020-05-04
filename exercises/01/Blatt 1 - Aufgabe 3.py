@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+""""
+@author: Abdulssatar Khateb, Felix Swimmer, Merle Hoffmann 
+"""
+
 import numpy as np
 import matplotlib as mp
 import skimage.io as sk

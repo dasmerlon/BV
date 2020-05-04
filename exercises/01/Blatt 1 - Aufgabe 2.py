@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+""""
+@author: Abdulssatar Khateb, Felix Swimmer, Merle Hoffmann 
+"""
+
 import numpy as np
 
 u = np.zeros((1,100))
