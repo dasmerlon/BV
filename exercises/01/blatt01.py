@@ -2,7 +2,7 @@
 """
 Created on Tue Apr 28 22:36:56 2020
 
-@author: Abdulssatar Khateb, Felix Swimmee, Merle Hoffmann 
+@author: Abdulssatar Khateb, Felix Swimmer, Merle Hoffmann 
 """
 
 """
