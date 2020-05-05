@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-""""
-@author: Abdulssatar Khateb, Felix Swimmer, Merle Hoffmann 
-"""
+
 import time
 import numpy as np
 import skimage.io as sk
@@ -30,14 +28,14 @@ def RangeCheckWithBroadcasting():
     
 def CheckTimes():
     tic = time.time()
-    for x in range(99):
+    for x in range(100):
         RangeCheckWithBroadcasting()
     toc = time.time()
     diff = toc-tic
     print(diff)
     
     tic = time.time()
-    for x in range(99): #braucht 78 sekunden!!!
+    for x in range(100): #braucht 78 sekunden!!!
         RangeCheckWithLoops()
     toc = time.time()
     diff = toc-tic

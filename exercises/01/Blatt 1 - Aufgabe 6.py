@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-""""
-@author: Abdulssatar Khateb, Felix Swimmer, Merle Hoffmann 
-"""
+
 import numpy as np
 import skimage.io as sk
 
@@ -21,7 +19,7 @@ amountOfUnevenNumbers = np.count_nonzero(imgModulo==1)
 amountOfEvenNumbers = amountOfValues - amountOfUnevenNumbers
 
 #print(amountOfUnevenNumbers)
-print(amountOfEvenNumbers)
+#print(amountOfEvenNumbers)
 
 evenArrayIndices = np.where(imgModulo == 0)
 IndicesList = []

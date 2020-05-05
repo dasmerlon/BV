@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-""""
-@author: Abdulssatar Khateb, Felix Swimmer, Merle Hoffmann 
-"""
-
 import numpy as np
 
 u = np.zeros((1,100))
@@ -13,7 +9,7 @@ m = v.reshape(3,4)
 
 m = m * 1.2
 m = m.astype(int)
-m = m * 1.2
+m = m * 1.2 # wird zu einem float64
 
-m = m * m
+m = m * m    #multiplikationen mit matrizen ist schon elementweise
 print(m)
