@@ -40,7 +40,7 @@ def range_check_with_loops(img):
                 bool_list += [True]      # fügt der Liste True hinzu
             else:
                 bool_list += [False]      # fügt der Liste False hinzu
-    bool_array = np.reshape(np.array(bool_list), (img.shape))  # erzeugt ein 
+    np.reshape(np.array(bool_list), (img.shape))  # erzeugt ein 
     # Array aus der Liste in Form des übergebenen Bildes
     
 
@@ -58,7 +58,7 @@ def range_check_with_broadcasting(img):
     bigger_array = min_array < img  # erzeugt ein Array mit Boolwerten, wobei
     # an den Stellen, an denen der Pixelwert größer als 99 ist, True ist
     smaller_array = img < max_array # -"- ...kleiner als 200 ist, True ist
-    bool_array = bigger_array == smaller_array  # erzeugt ein Array mit Bool-
+    bigger_array == smaller_array  # erzeugt ein Array mit Bool-
     # werten, wenn in beiden Arrays auf der gleichen Stelle das gleiche steht
         
       
