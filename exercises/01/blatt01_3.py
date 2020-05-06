@@ -38,8 +38,9 @@ plt.imshow(mandrill, cmap = 'gray')
 3. Erstellt ein neues Array als Bildausschnitt, das, wie in Abbildung 1a 
    visualisiert, etwa die Nasenspitze des Mandrill beinhaltet.
 """
-mandrill_nose = np.array(mandrill[330:450,150:340])
+mandrill_nose = np.array(mandrill[325:450, 150:340])
 #plt.imshow(mandrill_nose, cmap = 'gray')
+
 
 """
 4. Speichert den Bildausschnitt mit der Funktion skimage.io.imsave ab.
@@ -63,6 +64,6 @@ mandrill_black_pixel[200,200] = 0     # Färbt den Pixel an (200,200) schwarz
    anzeigen. Erkennt man nun den Unterschied? (kein Antworttext nötig)
 """
 mandrill_black_eyes = np.copy(mandrill)
-mandrill_black_eyes[25:100, 100:400] = 0   # Färbt den Bereich der Augen schwarz
+mandrill_black_eyes[25:100, 100:400] = 0  # Färbt den Bereich der Augen schwarz
 #plt.imshow(mandrill_black_eyes, cmap = 'gray')
 

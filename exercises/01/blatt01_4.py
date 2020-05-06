@@ -81,10 +81,10 @@ mandrill_inverted = np.invert(mandrill)
    ein Pixel und findet heraus, ob diese Änderung auch im Originalbild 
    durchgeführt wird.
 """
-mandrill_nose = mandrill[325:450, 150:350]
+mandrill_nose = mandrill[325:450, 150:340]
 mandrill_nose[60,90] = 0       # Färbt den Pixel an (60,90) schwarz
 #plt.imshow(mandrill_nose, cmap = 'gray')    # Der Pixel ist zu sehen
-#plt.imshow(mandrill, cmap = 'gray')     # Im Originalbild aber nicht
+#plt.imshow(mandrill, cmap = 'gray')     # Im Originalbild ebenfalls (zoomen)
 
 
 """
@@ -100,7 +100,7 @@ mask = np.zeros_like(mandrill)  # erzeugt ein schwarzes Bild
 b) Setzt nun in der Maske alle Pixel, die in dem Bereich liegen, der die 
    Nasenspitze beinhaltet, auf 1.
 """
-mask[325:450, 150:350] = 1
+mask[325:450, 150:340] = 1
 
 
 """

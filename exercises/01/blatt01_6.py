@@ -42,8 +42,8 @@ mandrill_std = np.std(mandrill)      # Standardabweichung: 43.27355497483949
    Schaut in die Dokumentation der entsprechenden Funktionen, um zu erfahren,
    wie ihr aus dem einen Ergebnisindex zwei Koordinaten generiert.
 """
-#print(np.unravel_index(np.argmin(mandrill), mandrill.shape)) #Minimum(511, 177)
-#print(np.unravel_index(np.argmax(mandrill), mandrill.shape)) #Maximum(74, 295)
+print(np.unravel_index(np.argmin(mandrill), mandrill.shape)) #Minimum(511, 177)
+print(np.unravel_index(np.argmax(mandrill), mandrill.shape)) #Maximum(74, 295)
 
 
 """
@@ -74,3 +74,5 @@ for x in range(len(indices_even[0])):  # Iteriert so häufig, wie die Länge des
     # zweiten Liste des Indexarrays hinzu
 
 #print(indices_list)  # schreibt die Liste der Koordinaten auf die Konsole
+    
+    

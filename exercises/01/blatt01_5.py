@@ -80,5 +80,6 @@ def measure_time(function):
 
 measure_time(range_check_with_loops(imread('./mandrill.png')))
 measure_time(range_check_with_broadcasting(imread('./mandrill.png')))
-# Die Funktionen sind ungefähr gleich schnell. 
+# Die Funktionen sind ungefähr gleich schnell. Sie unterscheiden sich eventuell
+# nur durch Millisekunden. Beide brauchen ca. 2-3 Sekunden.
 
