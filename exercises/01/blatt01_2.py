@@ -27,7 +27,7 @@ u = np.zeros(100)
 2. Erzeugt zudem einen Vektor v als 1D-Array aus der Liste:
    [0,1,2,3,4,5,6,7,8,9,10,11].
 """
-v = np.array(range(12))   # range(12) erzeugt eine Liste von 0-11
+v = np.array(range(12))     # range(12) erzeugt eine Liste von 0-11
 
 
 """
@@ -63,6 +63,6 @@ m = m * 1.2
 7. Berechnet das Hadamard-Produkt (elementweise Multiplikation) der Matrix m 
    mit sich selbst.
 """
-m = m * m    
+m = m * m
 print(m)
 
