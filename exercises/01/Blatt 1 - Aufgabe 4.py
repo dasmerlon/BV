@@ -1,32 +1,115 @@
 # -*- coding: utf-8 -*-
+"""
+@author: Merle Hoffmann (7031673), 
+         Abdulssatar Khateb (6976879), 
+         Felix Swimmer (7162123)
+         
+         
+         
+Aufgabe 4 — Fortgeschrittene Bearbeitung von Bildern 
+
+In dieser Aufgabe sollen weitere Manipulationen an einem Beispielbild erprobt 
+werden. Schreibt dazu wieder ein Python-Skript, das alle Schritte eurer 
+Manipulationen beinhaltet. Im Rahmen dieser Aufgabe ist nur die Nutzung von 
+NumPy, Matplotlib sowie skimage.io.imread zum Laden eines Bildes erlaubt.
+"""
 
 import numpy as np
-import matplotlib as mp
-import skimage.io as sk
+import matplotlib.pyplot as plt
+from skimage.io import imread
 
-img = sk.imread('mandrill.png')
 
-imgFlipLeft = np.fliplr(img)
-imgFlipTop = np.flipud(img)
-imgBothFlips = np.flipud(imgFlipLeft)
+"""
+1. Erstellt ein neues Bild basierend auf drei Variationen des Bildes 
+   mandrill.png aus dem Moodle sowie dem Originalbild.
+   
+a) Ladet dazu zunächst erneut das Bildmandrill.pngaus dem Moodle in Python.
+"""
+mandrill = imread('./mandrill.png')
 
-imgBig = np.resize(img, (1024,1024))
-imgBig[:512,:512] = img
-imgBig[:512,512:1024] = imgFlipLeft
-imgBig[512:1024, :512]= imgFlipTop
-imgBig[512:1024, 512:1024] = imgBothFlips
 
-#mp.pyplot.imshow(imgBig, cmap = 'gray') #teilaufgabe 1
+"""
+b) Spiegelt das Bild an der vertikalen Achse (linke und rechte Seite tasuchen) 
+   und speichert das Ergebnis in eine neue Variable als erste Variation.
+"""
+top_right = np.fliplr(mandrill)
 
-imgInvert = np.invert(img) 
 
-#mp.pyplot.imshow(imgInvert, cmap = 'gray') #teilaufgabe 2
+"""
+c) Spiegelt das Originalbild (mandrill.png) nun an der horizontalen Achse und 
+   speichert das Ergebnis erneut in einer neuen Variable. Dies ist die ist die 
+   zweite Variation.
+"""
+bottom_left = np.flipud(mandrill)
 
-imgcropped = img[325:450, 150:350]
-imgcropped[75,150] = 0 #wird angezeigt
-mp.pyplot.imshow(img, cmap = 'gray') #teilaufgabe 3
 
-Array = np.zeros((512,512))
-Array[325:450, 150:350] = 1
-img = img*Array
-mp.pyplot.imshow(img, cmap = 'gray') #teilaufgabe 4
+"""
+d) Führt jetzt beide Spiegelungen nacheinander auf dem Originalbild aus,
+   speichert das Ergebniswiederum in einem neuen Bild als dritte Variation.
+"""
+bottom_right = np.flipud(top_right)   # top_right beinhaltet die 1. Spiegelung
+
+
+"""
+e) Erzeugt nun ein neues Bild, das doppelt so hoch und breit ist wie das 
+   Bild mandrill.png. Setzt in jeden Quadranten des neuen Bildes eine der vier
+   Versionen des Bildes ein. Oben links soll das Origianlbild zu sehen sein, 
+   rechts daneben das an der vertikalen Achse gespiegelte Bild, links unten 
+   das an der horizontalen Achse gespiegelte Bild und rechts unten das 
+   an beiden Achsen gespiegelte Bild. Das Ergebnis sollte etwa wie in 
+   Abbildung 1b aussehen.Tipp: Zum Erzeugen von Arrays bzw. Bildern gibt es 
+   in NumPy mehrere Funktionen neben np.array.
+"""
+mandrill_big = np.block([[mandrill, top_right], 
+                         [bottom_left, bottom_right]])
+plt.imshow(mandrill_big, cmap = 'gray')
+
+
+"""
+2. Erzeugt nun ein Negativ des Originalbilds (mandrill.png). In einem Negativ
+   sind alle Helligkeitswerte umgedreht. D.h. schwarz wird zu weiß, weiß wird 
+   zu schwarz und alle Werte dazwischenwerden ebenso gedreht. Lasst euch das 
+   Bild zur Kontrolle anzeigen.
+"""
+mandrill_inverted = np.invert(mandrill) 
+#plt.imshow(mandrill_inverted, cmap = 'gray')
+
+
+"""
+3. Schneidet erneut die Nasenspitze des Mandrills wie in Abbildung 1a 
+   dargestellt als neues Bild aus. Ändert nun in dem neu erzeugten Ausschnitt
+   ein Pixel und findet heraus, ob diese Änderung auch im Originalbild 
+   durchgeführt wird.
+"""
+mandrill_nose = mandrill[325:450, 150:350]
+mandrill_nose[60,90] = 0       # Färbt den Pixel an (60,90) schwarz
+#plt.imshow(mandrill_nose, cmap = 'gray')    # Der Pixel ist zu sehen
+#plt.imshow(mandrill, cmap = 'gray')     # Im Originalbild aber nicht
+
+
+"""
+4. Erstellt euch nun eine Maske für den Bereich der Nasenspitze des Mandrills.
+
+a) Erzeugt dazu zunächst ein neues Bild, das nur aus Nullen besteht, und die 
+   gleiche Größe wie das Originalbild hat. Dieses Bild wird eure Maske.
+"""
+mask = np.zeros_like(mandrill)  # erzeugt ein schwarzes Bild 
+
+
+"""
+b) Setzt nun in der Maske alle Pixel, die in dem Bereich liegen, der die 
+   Nasenspitze beinhaltet, auf 1.
+"""
+mask[325:450, 150:350] = 1
+
+
+"""
+c) Verrechnet anschließend Maske und Originalbild, sodass der Bereich 
+   außerhalb der Nasenspitze schwarz ist und nur im Bereich der Nasenspitze 
+   das eigentliche Bild zu sehen ist. Das Ergebnis sollte etwa wie in 
+   Abbildung 1c aussehen.
+"""
+mask = mask * mandrill  # Der schwarze Bereich bleibt schwarz, denn 0 * x = 0
+                        # und der weiße Bereich wird zum Bild, denn 1 * x = x
+#plt.imshow(mask, cmap = 'gray')
+

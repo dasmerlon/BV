@@ -4,6 +4,9 @@ import time
 import numpy as np
 import skimage.io as sk
 
+'''
+ Unterschiedliche Lösungen!! Funktion sollte ein Array als Parameter erhalten
+'''
 def RangeCheckWithLoops():
     img = sk.imread('mandrill.png')
     boolArray = np.full((512,512), False)
@@ -16,6 +19,9 @@ def RangeCheckWithLoops():
     #print(boolArray)     
     
 
+'''
+ Unterschiedliche Lösungen!! Funktion sollte ein Array als Parameter erhalten
+'''
 def RangeCheckWithBroadcasting(): 
     img = sk.imread('mandrill.png')
     SmallerArray = np.full((512,512), 99)
@@ -26,6 +32,10 @@ def RangeCheckWithBroadcasting():
     boolArray = boolArray1 == boolArray2
     #print(boolArray)
     
+
+'''
+ Wiederholung innerhalb der Funktion => Funktion als Parameter übergeben
+'''
 def CheckTimes():
     tic = time.time()
     for x in range(100):
@@ -42,4 +52,8 @@ def CheckTimes():
     print(diff)
     
 
+'''
+Bei mir sind beide Funktionen sehr ähnlich schnell. Unterscheiden sich nur
+in Millisekunden. Beide brauchen ca 2-3 sek.
+'''
 CheckTimes()
