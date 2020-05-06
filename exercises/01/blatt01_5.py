@@ -29,9 +29,9 @@ from skimage.io import imread
    mittels zweier for-Schleifen.
 """
 # Die Funktion erhält ein Bild als NumPy-Array und prüft alle Pixelwerte,
-# ob sie zwischen 99 und 200 liegen. Die Funktion schreibt am Ende ein 
-# NumPy-Array mit den Booleschen Werten auf die Konsole, wobei True bedeutet,
-# dass der Pixel an dieser Stelle in dem Bereich lag und False das Gegenteil.
+# ob sie zwischen 99 und 200 liegen. Die Funktion erzeugt ein NumPy-Array mit 
+# booleschen Werten, wobei True bedeutet, dass der Pixel an dieser Stelle in 
+# dem Bereich lag und False das Gegenteil.
 def range_check_with_loops(img):
     bool_list = list()                # Deklaration einer leeren Liste
     for x in range(img.shape[0]):     # Iteration über die Zeilen des Bildes
@@ -42,7 +42,6 @@ def range_check_with_loops(img):
                 bool_list += [False]      # fügt der Liste False hinzu
     bool_array = np.reshape(np.array(bool_list), (img.shape))  # erzeugt ein 
     # Array aus der Liste in Form des übergebenen Bildes
-    print(bool_array)  # schreibt das Array mit den Boolwerten auf die Konsole
     
 
 """
@@ -50,9 +49,9 @@ def range_check_with_loops(img):
    Broadcasting, d.h. komplett ohne die Benutzung von Schleifen.
 """
 # Die Funktion erhält ein Bild als NumPy-Array und prüft alle Pixelwerte,
-# ob sie zwischen 99 und 200 liegen. Die Funktion schreibt am Ende ein 
-# NumPy-Array mit den Booleschen Werten auf die Konsole, wobei True bedeutet,
-# dass der Pixel an dieser Stelle in dem Bereich lag und False das Gegenteil.
+# ob sie zwischen 99 und 200 liegen. Die Funktion erzeugt ein NumPy-Array mit 
+# booleschen Werten, wobei True bedeutet, dass der Pixel an dieser Stelle in 
+# dem Bereich lag und False das Gegenteil.
 def range_check_with_broadcasting(img):
     min_array = np.full(img.shape, 99)   # erzeugt ein Array nur mit 99
     max_array = np.full(img.shape, 200)  # erzeugt ein Array nur mit 200
@@ -61,7 +60,6 @@ def range_check_with_broadcasting(img):
     smaller_array = img < max_array # -"- ...kleiner als 200 ist, True ist
     bool_array = bigger_array == smaller_array  # erzeugt ein Array mit Bool-
     # werten, wenn in beiden Arrays auf der gleichen Stelle das gleiche steht
-    print(bool_array)  # schreibt das Array mit den Boolwerten auf die Konsole
         
       
 """
@@ -72,14 +70,15 @@ def range_check_with_broadcasting(img):
 def measure_time(function):
     tic = time.time()     # speichert die Startzeit
     for x in range(100):  # Iteriert 100 mal
-        function          # führt die übergebene Funktion aus
+        function(imread('./mandrill.png')) # führt die übergebene Funktion auf
+        # dem Bild mandrill.png aus
     toc = time.time()     # speichert die Endzeit
     diff = toc-tic        
     print(diff)           # schreibt die vergangene Zeit auf die Konsole
 
 
-measure_time(range_check_with_loops(imread('./mandrill.png')))
-measure_time(range_check_with_broadcasting(imread('./mandrill.png')))
-# Die Funktionen sind ungefähr gleich schnell. Sie unterscheiden sich eventuell
-# nur durch Millisekunden. Beide brauchen ca. 2-3 Sekunden.
-
+measure_time(range_check_with_loops)         # ca. 70 sec
+measure_time(range_check_with_broadcasting)  # ca   0.5 sec
+# Die Funktion mit den for-Schleifen braucht wesentlich länger, als die
+# Funktion mit Broadcasting.
+# 
