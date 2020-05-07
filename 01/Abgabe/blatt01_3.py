@@ -67,3 +67,5 @@ mandrill_black_eyes = np.copy(mandrill)
 mandrill_black_eyes[25:100, 100:400] = 0  # Färbt den Bereich der Augen schwarz
 #plt.imshow(mandrill_black_eyes, cmap = 'gray')
 
+
+plt.show()

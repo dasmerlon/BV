@@ -62,6 +62,7 @@ e) Erzeugt nun ein neues Bild, das doppelt so hoch und breit ist wie das
 """
 mandrill_big = np.block([[mandrill, top_right], 
                          [bottom_left, bottom_right]])
+plt.close('all')
 plt.imshow(mandrill_big, cmap = 'gray')
 
 
@@ -113,3 +114,5 @@ mask = mask * mandrill  # Der schwarze Bereich bleibt schwarz, denn 0 * x = 0
                         # und der weiße Bereich wird zum Bild, denn 1 * x = x
 #plt.imshow(mask, cmap = 'gray')
 
+
+plt.show()
