@@ -49,7 +49,10 @@ red_s = 255 * (red_m / np.max(red_m))
 
 
 '''
-Berechnet den Indikator für lebende, grüne Vegetation NDVI
+Berechnet den Indikator für lebende, grüne Vegetation NDVI.
+Berechnungen des NDVI's resultieren immer in Pixeln, die in dem Bereich 
+-1 bis 1 liegen. Werte nahe 0 bedeuten, dass keine Vegetation vorhanden ist, 
+Werte nahe 1 zeigen wiederrum Vegetation an.
 '''
 ndvi = (nir - red_s) / (nir + red_s)
 
@@ -60,15 +63,5 @@ Zeigt das Ergebnis als Graustufenbild an
 plt.close('all')
 imshow(ndvi, cmap='gray')
 plt.show()
-
-
-'''
-Berechnungen des NDVI's resultieren immer in Pixeln, die in dem Bereich 
--1 bis 1 liegen. Werte nahe 0 bedeuten, dass keine Vegetation vorhanden ist, 
-Werte nahe 1 zeigen wiederrum Vegetation an.
-Da die Kreise sehr hell bis weiß angezeigt werden, kann man davon ausgehen,
-dass es sich hierbei um Pflanzen handelt. Alles außerhalb der Kreise ist grau,
-also nahe 0, was bedeutet, dass dort keine Pflanzen sind.
-'''
 
 
