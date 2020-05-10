@@ -8,6 +8,9 @@
     
 Aufgabe 1 — Anwendung Fernerkundung
 
+Das Satellitenbild scheint einige grüne Punkte in der Wüste zu zeigen. 
+Sind dies Pflanzen? Findet es heraus, indem ihr den Vegetationsindex NDVI 
+(normalized difference vegetation index) für jedes Pixel im Bild berechnet.
 
 Band No.        Name                    wavelength
 1               visible blue            0.45-0.52
