@@ -29,8 +29,8 @@ Ladet die Bänder 3 und 4 mithilfe der Funktion skimage.io.imread in Python.
 Band3 ist die Aufnahme des roten Lichts und 
 Band4 ist die Aufnmahme des nahen Infrarot
 '''
-band3 = imread('./landsatBild/band1.png')
-band4 = imread('./landsatBild/band1.png')
+band3 = imread('./landsatBild/band3.png')
+band4 = imread('./landsatBild/band4.png')
 
 
 '''
@@ -41,20 +41,12 @@ nir = band4.astype(np.float)
 
 
 '''
-Skaliert die Werte von dem Bild red auf den zulässigen Bereich
-um Overflow zu verhindern
-'''
-red_m = red - np.min(red)
-red_s = 255 * (red_m / np.max(red_m))
-
-
-'''
 Berechnet den Indikator für lebende, grüne Vegetation NDVI.
 Berechnungen des NDVI's resultieren immer in Pixeln, die in dem Bereich 
 -1 bis 1 liegen. Werte nahe 0 bedeuten, dass keine Vegetation vorhanden ist, 
 Werte nahe 1 zeigen wiederrum Vegetation an.
 '''
-ndvi = (nir - red_s) / (nir + red_s)
+ndvi = (nir - red) / (nir + red)
 
 
 '''
