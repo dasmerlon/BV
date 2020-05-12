@@ -24,20 +24,20 @@ Band No.        Name                    wavelength
 
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage.io import imread, imshow
+from skimage.io import imread
 
 
 '''
 Ladet die Bänder 3 und 4 mithilfe der Funktion skimage.io.imread in Python.
 Band3 ist die Aufnahme des roten Lichts und 
-Band4 ist die Aufnmahme des nahen Infrarot
+Band4 ist die Aufnmahme des nahen Infrarot.
 '''
 band3 = imread('./landsatBild/band3.png')
 band4 = imread('./landsatBild/band4.png')
 
 
 '''
-Ändert den Datentyp der NumpyArrays auf np.float 
+Ändert den Datentyp der NumpyArrays auf np.float.
 '''
 red = band3.astype(np.float)
 nir = band4.astype(np.float)
@@ -53,10 +53,10 @@ ndvi = (nir - red) / (nir + red)
 
 
 '''
-Zeigt das Ergebnis als Graustufenbild an
+Zeigt das Ergebnis als Graustufenbild an.
 '''
 plt.close('all')
-imshow(ndvi, cmap='gray')
+plt.imshow(ndvi, cmap='gray')
 plt.show()
 
 
