@@ -18,7 +18,7 @@ plt.close('all')
 mandrill = imread('./mandrill.png')
 
 fig1 = plt.figure(1)
-fig1.suptitle('without noise')
+fig1.suptitle('image without noise')
 plt.imshow(mandrill, cmap = 'gray')
 
 
@@ -34,20 +34,27 @@ def gaussian_noise(img, sigma):
     img_s = scaling_image(img_n)
     plt.imshow(img_s, cmap = 'gray')
 
-#the smaller the SNR, the larger the noise ratio.
     
-#def salt_and_pepper_noise(img, p):
-#    noise = salt + pepper
-#    img_n = img + #salt and pepper noise
-#    plt.imshow(img_n, cmap = 'gray')
+def salt_and_pepper_noise(img, p):
+    img_n = np.empty(img.shape, np.uint8)
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            r = np.random.random_sample()
+            if r < (p/2):
+                img_n[i][j] = 0     # pepper noise
+            elif r > (1 - p/2):
+                img_n[i][j] = 255   # salt noise
+            else:
+                img_n[i][j] = img[i][j]
+    plt.imshow(img_n, cmap = 'gray')
 
 
 fig2 = plt.figure(2)
-fig2.suptitle('gaussian noise')
-gaussian_noise(mandrill, 20)
+fig2.suptitle('image with gaussian noise')
+gaussian_noise(mandrill, 30)
 
 fig3 = plt.figure(3)
-fig3.suptitle('salt-and-pepper noise')
-#salt_and_pepper_noise(mandrill, 0.5)
+fig3.suptitle('image with salt-and-pepper noise')
+salt_and_pepper_noise(mandrill, 0.2)
 
 plt.show()
