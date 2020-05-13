@@ -27,34 +27,34 @@ import matplotlib.pyplot as plt
 from skimage.io import imread
 
 
-'''
+"""
 Ladet die Bänder 3 und 4 mithilfe der Funktion skimage.io.imread in Python.
 Band3 ist die Aufnahme des roten Lichts und 
 Band4 ist die Aufnmahme des nahen Infrarot.
-'''
+"""
 band3 = imread('./landsatBild/band3.png')
 band4 = imread('./landsatBild/band4.png')
 
 
-'''
+"""
 Ändert den Datentyp der NumpyArrays auf np.float.
-'''
+"""
 red = band3.astype(np.float)
 nir = band4.astype(np.float)
 
 
-'''
+"""
 Berechnet den Indikator für lebende, grüne Vegetation NDVI.
 Berechnungen des NDVI's resultieren immer in Pixeln, die in dem Bereich 
 -1 bis 1 liegen. Werte nahe 0 bedeuten, dass keine Vegetation vorhanden ist, 
 Werte nahe 1 zeigen wiederrum Vegetation an.
-'''
+"""
 ndvi = (nir - red) / (nir + red)
 
 
-'''
+"""
 Zeigt das Ergebnis als Graustufenbild an.
-'''
+"""
 plt.close('all')
 plt.imshow(ndvi, cmap='gray')
 plt.show()
