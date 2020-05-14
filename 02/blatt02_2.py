@@ -14,38 +14,63 @@ der Gauß-Funktion enthalten..
 """
 
 import numpy as np
-import math as m
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 
 
-
+"""
+Erzeugt ein 1-D Array aus 51 zufälligen float-Werten, 
+die zwischen -5 und 5 liegen.
+"""
 random_row = np.random.uniform(-5, 5, (51,))
 
 
+"""
+Die Funktion gaussian() berechnet die Gaußfunktion für einen Wert x mit 
+mu = 0 und sigma = 1
+"""
 def gaussian(x):
-    return stats.norm.pdf(x, 0, 1)
+    return stats.norm.pdf(x, 0, 1)  # (wert, mu, sigma)
 
+
+"""
+Tastet die Bildzeile von random_row mit der Gaußfunktion ab.
+"""
 random_gaussian = np.apply_along_axis(gaussian, 0, random_row)
 
+
+"""
+Wiederholt die Bildzeile 100 mal
+"""
 random_gaussian = np.repeat(random_gaussian, 100, axis=0)
+
+
+"""
+Erzeugt aus dem 1-D Array ein Array der Form (51, 100)
+"""
 random_gaussian = random_gaussian.reshape(51, 100)
+
+
+"""
+Transponiert das Array, sodass es nun die Form (100, 51) hat, wobei die 100
+Zeilen alle gleich sind.
+"""
 random_gaussian = random_gaussian.T
 print(random_gaussian.shape)
 
 
-
-'''
+"""
 Skaliert alle Pixelwerte so, dass der höchste Wert des Bildes bei 255 und der
 niedrigste Wert bei 0 liegt. Der Wertebereich ist also [0..255].
-'''
+"""
 g_m = random_gaussian - np.min(random_gaussian)
 g_s = 255 * (g_m / np.max(g_m))
 
-print(np.max(g_s), np.min(g_s))
 
-
+"""
+Zeigt das Bild an.
+"""
+plt.close('all')
 plt.imshow(g_s, cmap='gray')
-
 plt.show()
 
