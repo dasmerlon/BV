@@ -9,8 +9,8 @@
 Aufgabe 2 — Abtastung und Quantisierung
 
 Erstellt ein Python-Skript, das ein Bild mit 100 identischen Bildzeilen 
-erzeugt. Jede Bildzeile soll dabeidie identische Abtastung und Quantisierung 
-der Gauß-Funktion enthalten..
+erzeugt. Jede Bildzeile soll dabei die identische Abtastung und Quantisierung 
+der Gauß-Funktion enthalten.
 """
 
 import numpy as np
@@ -27,10 +27,10 @@ random_row = np.random.uniform(-5, 5, (51,))
 
 """
 Die Funktion gaussian() berechnet die Gaußfunktion für einen Wert x mit 
-mu = 0 und sigma = 1
+mu = 0 und sigma = 1.
 """
-def gaussian(x):
-    return stats.norm.pdf(x, 0, 1)  # (wert, mu, sigma)
+def gaussian(x, mu=0, sigma=1):
+    return stats.norm.pdf(x, mu, sigma)
 
 
 """
@@ -40,13 +40,13 @@ random_gaussian = np.apply_along_axis(gaussian, 0, random_row)
 
 
 """
-Wiederholt die Bildzeile 100 mal
+Wiederholt die Bildzeile 100 mal.
 """
 random_gaussian = np.repeat(random_gaussian, 100, axis=0)
 
 
 """
-Erzeugt aus dem 1-D Array ein Array der Form (51, 100)
+Erzeugt aus dem 1-D Array ein Array der Form (51, 100).
 """
 random_gaussian = random_gaussian.reshape(51, 100)
 
@@ -62,26 +62,26 @@ random_gaussian = random_gaussian.T
 Skaliert alle Pixelwerte so, dass der höchste Wert des Bildes bei 255 und der
 niedrigste Wert bei 0 liegt. Der Wertebereich ist also [0..255].
 """
-g_m = random_gaussian - np.min(random_gaussian)
-g_s = 255 * (g_m / np.max(g_m))
+random_gaussian_m = random_gaussian - np.min(random_gaussian)
+random_gaussian_s = 255 * (random_gaussian_m / np.max(random_gaussian_m))
 
 
 """
 Rundet die Werte des Arrays kaufmännisch.
 """
-g_s = np.rint(g_s)
+random_gaussian_s = np.rint(random_gaussian_s)
 
 
 """
 Ändert den Datentyp des Arrays auf np.uint8
 """
-g_s = g_s.astype(np.uint8)
+random_gaussian_s = random_gaussian_s.astype(np.uint8)
 
 
 """
 Zeigt das Bild an.
 """
 plt.close('all')
-plt.imshow(g_s, cmap='gray')
+plt.imshow(random_gaussian_s, cmap='gray')
 plt.show()
 
