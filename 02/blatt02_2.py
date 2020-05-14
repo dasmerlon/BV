@@ -56,7 +56,6 @@ Transponiert das Array, sodass es nun die Form (100, 51) hat, wobei die 100
 Zeilen alle gleich sind.
 """
 random_gaussian = random_gaussian.T
-print(random_gaussian.shape)
 
 
 """
@@ -65,6 +64,18 @@ niedrigste Wert bei 0 liegt. Der Wertebereich ist also [0..255].
 """
 g_m = random_gaussian - np.min(random_gaussian)
 g_s = 255 * (g_m / np.max(g_m))
+
+
+"""
+Rundet die Werte des Arrays kaufmännisch.
+"""
+g_s = np.rint(g_s)
+
+
+"""
+Ändert den Datentyp des Arrays auf np.uint8
+"""
+g_s = g_s.astype(np.uint8)
 
 
 """
