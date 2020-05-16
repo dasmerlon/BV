@@ -21,6 +21,8 @@ import matplotlib.pyplot as plt
 from skimage.io import imread
 
 
+#plt.close('all')
+
 """
 1. Ladet die fünf Einzelbilder des serienbild.zip aus dem Moodle in Python. 
    Zunächst muss aus den fünf Einzelbildern ein möglichst perfektes 
@@ -36,15 +38,10 @@ bild3 = imread('./serienbild/bild3.png')
 bild4 = imread('./serienbild/bild4.png')
 bild5 = imread('./serienbild/bild5.png')
 
-
-def scaling(g):
-    g_m = g - np.min(g)
-    g_s = 255 * (g_m / np.max(g_m))
-    return g_s
-
-
 test = 1/5 * bild1 + 1/5 * bild2 + 1/5 * bild3 + 1/5 * bild4 + 1/5 * bild5
-plt.imshow(scaling(test), cmap='gray')  # 5 Bilder reichen nicht
+#fig1 = plt.figure(1)
+#fig1.suptitle('Mittelung über die Bilder nach dem Gesetz der großen Zahlen')
+#plt.imshow(test, cmap='gray')  # 5 Bilder reichen nicht
 
 
 """
@@ -54,3 +51,64 @@ plt.imshow(scaling(test), cmap='gray')  # 5 Bilder reichen nicht
    Nachbarn! Das Ergebnis soll dabei dem in Abbildung 1b so nahe wie möglich 
    kommen.
 """
+bilder = np.stack((bild1, bild2, bild3, bild4, bild5), axis=2)
+# Ersetzt jeden Pixel durch den Mittelwert der Bilderfolge
+hintergrund = np.median(bilder, axis=2).astype(np.uint8)
+fig2 = plt.figure(2)
+fig2.suptitle('Hintergrundbild')
+plt.imshow(hintergrund, cmap='gray')
+
+
+"""
+3. Nutzt nun euer erzeugtes Hintergrundbild, um die veränderten Pixel in jedem 
+   der fünf Einzelbilder zu ermitteln. Damit ihr wirkliche Veränderungen vom 
+   Grundrauschen unterscheiden könnt, empfiehlt sich die Nutzung eines 
+   Schwellenwerts für die Mindeststärke der Veränderung. Den Schwellenwert 
+   müsst ihr selbst ermitteln. Ein perfektes Ergebnis werdet ihr aber 
+   vermutlich nicht bekommen, wie auch im Ergebnisbild 1c zu erkennen ist.
+"""
+ball1 = (bild1 - hintergrund) > 10
+ball2 = (bild2 - hintergrund) > 15
+ball3 = (bild3 - hintergrund) > 30
+ball4 = (hintergrund - bild4) > 50
+ball5 = (hintergrund - bild5) > 30
+
+#plt.imshow(ball3, cmap='gray')
+
+"""
+4. Ersetzt nacheinander für jedes der fünf Bilder die veränderten Pixel im 
+   Hintergrundbild durch die entsprechenden Pixel des Einzelbildes. D.h. die 
+   Pixel, die sich zwischen dem Hintergrundbild und dem ersten Einzelbild 
+   verändert haben, werden im Hintergrundbild durch die entsprechenden Pixel 
+   des ersten Einzelbilds ersetzt usw.
+"""
+ball1 = np.where(ball1==1, bild1, hintergrund)
+ball2 = np.where(ball2==1, bild2, ball1)
+ball3 = np.where(ball3==1, bild3, ball2)
+ball4 = np.where(ball4==1, bild4, ball3)
+ball5 = np.where(ball5==1, bild5, ball4)
+
+#fig2 = plt.figure(3)
+#print(ball)
+plt.imshow(ball5, cmap='gray')
+
+"""
+5. Speichert das Ergebnisbild ab. Es sollte in etwa dem in Abbildung 1c 
+   entsprechen.Tipp: Nehmt selbst ein Serienfotos oder Einzelfotos auf und 
+   versucht euer Verfahren darauf anzuwenden. Achtet dabei auf eine möglichst 
+   ruhige Kamera und benutzt wenn möglich ein Stativ. Um ein Farbbild in ein 
+   Graustufenbild umzuwandeln, könnt ihr die Funktion skimage.color.rgb2gray 
+   nutzen und das Ergebnis mit 255 multiplizieren. Originelle Ergebnisse werden 
+   in den Lösungsvideos gezeigt.
+"""
+plt.show()
+
+
+
+
+
+
+
+
+
+
