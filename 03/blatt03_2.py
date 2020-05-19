@@ -18,10 +18,10 @@ alle fünf Stadien der Bewegung aus den Einzelbildern auf einem Bild vereinen.
 
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage.io import imread
+from skimage.io import imread, imsave
 
 
-#plt.close('all')
+plt.close('all')
 
 """
 1. Ladet die fünf Einzelbilder des serienbild.zip aus dem Moodle in Python. 
@@ -39,9 +39,9 @@ bild4 = imread('./serienbild/bild4.png')
 bild5 = imread('./serienbild/bild5.png')
 
 test = 1/5 * bild1 + 1/5 * bild2 + 1/5 * bild3 + 1/5 * bild4 + 1/5 * bild5
-#fig1 = plt.figure(1)
-#fig1.suptitle('Mittelung über die Bilder nach dem Gesetz der großen Zahlen')
-#plt.imshow(test, cmap='gray')  # 5 Bilder reichen nicht
+fig1 = plt.figure(1)
+fig1.suptitle('Mittelung über die Bilder nach dem Gesetz der großen Zahlen')
+plt.imshow(test, cmap='gray')  # 5 Bilder reichen nicht
 
 
 """
@@ -54,6 +54,7 @@ test = 1/5 * bild1 + 1/5 * bild2 + 1/5 * bild3 + 1/5 * bild4 + 1/5 * bild5
 bilder = np.stack((bild1, bild2, bild3, bild4, bild5), axis=2)
 # Ersetzt jeden Pixel durch den Mittelwert der Bilderfolge
 hintergrund = np.median(bilder, axis=2).astype(np.uint8)
+
 fig2 = plt.figure(2)
 fig2.suptitle('Hintergrundbild')
 plt.imshow(hintergrund, cmap='gray')
@@ -73,7 +74,6 @@ ball3 = (bild3 - hintergrund) > 30
 ball4 = (hintergrund - bild4) > 50
 ball5 = (hintergrund - bild5) > 30
 
-#plt.imshow(ball3, cmap='gray')
 
 """
 4. Ersetzt nacheinander für jedes der fünf Bilder die veränderten Pixel im 
@@ -88,9 +88,10 @@ ball3 = np.where(ball3==1, bild3, ball2)
 ball4 = np.where(ball4==1, bild4, ball3)
 ball5 = np.where(ball5==1, bild5, ball4)
 
-#fig2 = plt.figure(3)
-#print(ball)
+fig3 = plt.figure(3)
+fig3.suptitle('alle Bälle')
 plt.imshow(ball5, cmap='gray')
+
 
 """
 5. Speichert das Ergebnisbild ab. Es sollte in etwa dem in Abbildung 1c 
@@ -101,6 +102,8 @@ plt.imshow(ball5, cmap='gray')
    nutzen und das Ergebnis mit 255 multiplizieren. Originelle Ergebnisse werden 
    in den Lösungsvideos gezeigt.
 """
+imsave('./serienbild/alle_baelle.png', ball5)
+
 plt.show()
 
 
