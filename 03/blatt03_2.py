@@ -74,9 +74,6 @@ ball3 = ((bild3 - hintergrund) > 10) * ((bild3 - hintergrund) < 240)
 ball4 = ((bild4 - hintergrund) > 10) * ((bild4 - hintergrund) < 240)
 ball5 = ((bild5 - hintergrund) > 13) * ((bild5 - hintergrund) < 220)
 
-print(bild4)
-print(hintergrund)
-plt.imshow(ball5, cmap='gray') 
 
 """
 4. Ersetzt nacheinander für jedes der fünf Bilder die veränderten Pixel im 
