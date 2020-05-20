@@ -19,7 +19,7 @@ alle fünf Stadien der Bewegung aus den Einzelbildern auf einem Bild vereinen.
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage.io import imread, imsave
-
+import skimage.color as color
 
 plt.close('all')
 
@@ -88,21 +88,45 @@ ball3 = np.where(ball3==1, bild3, ball2)
 ball4 = np.where(ball4==1, bild4, ball3)
 ball5 = np.where(ball5==1, bild5, ball4)
 
+
 fig3 = plt.figure(3)
 fig3.suptitle('alle Bälle')
 plt.imshow(ball5, cmap='gray')
 
-
 """
 5. Speichert das Ergebnisbild ab. Es sollte in etwa dem in Abbildung 1c 
-   entsprechen.Tipp: Nehmt selbst ein Serienfotos oder Einzelfotos auf und 
-   versucht euer Verfahren darauf anzuwenden. Achtet dabei auf eine möglichst 
-   ruhige Kamera und benutzt wenn möglich ein Stativ. Um ein Farbbild in ein 
-   Graustufenbild umzuwandeln, könnt ihr die Funktion skimage.color.rgb2gray 
-   nutzen und das Ergebnis mit 255 multiplizieren. Originelle Ergebnisse werden 
-   in den Lösungsvideos gezeigt.
+   entsprechen.
 """
 imsave('./serienbild/alle_baelle.png', ball5)
+
+
+"""
+Tipp: Nehmt selbst ein Serienfotos oder Einzelfotos auf und 
+      versucht euer Verfahren darauf anzuwenden. Achtet dabei auf eine 
+      möglichst ruhige Kamera und benutzt wenn möglich ein Stativ. Um ein 
+      Farbbild in ein Graustufenbild umzuwandeln, könnt ihr die Funktion 
+      skimage.color.rgb2gray nutzen und das Ergebnis mit 255 multiplizieren. 
+      Originelle Ergebnisse werden in den Lösungsvideos gezeigt.
+"""
+hintergrund = (color.rgb2gray(imread('./serienbild2/background.png')) * 255).astype(np.uint8)
+bild1 = (color.rgb2gray(imread('./serienbild2/bild1.png')) * 255).astype(np.uint8)
+bild2 = (color.rgb2gray(imread('./serienbild2/bild2.png')) * 255).astype(np.uint8)
+bild3 = (color.rgb2gray(imread('./serienbild2/bild3.png')) * 255).astype(np.uint8)
+bild4 = (color.rgb2gray(imread('./serienbild2/bild4.png')) * 255).astype(np.uint8)
+
+arm1 = ((bild1 - hintergrund) > 15) * ((bild1 - hintergrund) < 240)
+arm2 = ((bild2 - hintergrund) > 30) * ((bild2 - hintergrund) < 180)
+arm3 = ((bild3 - hintergrund) > 20) * ((bild3 - hintergrund) < 200)
+arm4 = ((bild4 - hintergrund) > 30) * ((bild4 - hintergrund) < 200)
+
+arm1 = np.where(arm1==1, bild1, hintergrund)
+arm2 = np.where(arm2==1, bild2, arm1)
+arm3 = np.where(arm3==1, bild3, arm2)
+arm4 = np.where(arm4==1, bild4, arm3)
+
+fig4 = plt.figure(4)
+fig4.suptitle('Eigene Serienfotos:')
+plt.imshow(arm4, cmap='gray')
 
 plt.show()
 
