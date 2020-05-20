@@ -69,11 +69,14 @@ plt.imshow(hintergrund, cmap='gray')
    vermutlich nicht bekommen, wie auch im Ergebnisbild 1c zu erkennen ist.
 """
 ball1 = (bild1 - hintergrund) > 10
-ball2 = (bild2 - hintergrund) > 15
-ball3 = (bild3 - hintergrund) > 30
-ball4 = (hintergrund - bild4) > 50
-ball5 = (hintergrund - bild5) > 30
+ball2 = ((bild2 - hintergrund) > 15) * ((bild2 - hintergrund) < 250)
+ball3 = ((bild3 - hintergrund) > 10) * ((bild3 - hintergrund) < 240)
+ball4 = ((bild4 - hintergrund) > 10) * ((bild4 - hintergrund) < 240)
+ball5 = ((bild5 - hintergrund) > 13) * ((bild5 - hintergrund) < 220)
 
+print(bild4)
+print(hintergrund)
+plt.imshow(ball5, cmap='gray') 
 
 """
 4. Ersetzt nacheinander für jedes der fünf Bilder die veränderten Pixel im 
