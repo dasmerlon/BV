@@ -19,20 +19,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from skimage.io import imread
 
+plt.close('all')
+
 
 without_mistakes = imread('./findetDieFehler/ohneFehler.png')
 with_mistakes = imread('./findetDieFehler/mitFehler.png')
-
-plt.close('all')
-
 
 """
 1. Ermittelt zunächst ein Bild, das die Veränderungen zwischen den beiden 
    Bildern zeigt als Verknüpfung der Bilder mit einem sinnvollen arithmetischen 
    Operator.
 """
+# Hintergrundsubtraktion zeigt Unterschiede (Pixelwert=0 -> keine Veränderung)
 differences = with_mistakes - without_mistakes
-
 
 """
 2. Wandelt das Ergebnis anschließend in ein Binärbild um, das veränderte Pixel 
@@ -41,7 +40,7 @@ differences = with_mistakes - without_mistakes
    der Veränderungen selbst ermitteln und die Anzahl zählen, aber das soll nun 
    ebenfalls der Computer machen.
 """
-mask = differences > 0
+mask = differences > 0  # Einfügen des Schwellenwerts 0: Werte > 0 werden zu 1
 plt.imshow(mask, cmap='gray')
 
 
@@ -53,6 +52,7 @@ plt.imshow(mask, cmap='gray')
 a) Ermittelt dazu zunächst alle Koordinaten von Pixeln, die sich verändert 
    haben.
 """
+# Vordergrundkoordinaten als Menge in der Form {(x1,y1), (x2,y2), ...}
 coordinates = set(zip(*np.where(mask == 1)))
 
 
@@ -62,44 +62,44 @@ b) Startet nun bei einem beliebigen Pixel und prüft ob dessen Nachbarn auch
    koordinaten hangeln und iterativ die zusammenhängenden, veränderten Bereiche
    vollständig aufspüren.
 """
-clusters = []
+clusters = []  # erzeugt eine leere Liste
 
+# Die Funktion erhält eine Vordergrundkoordinate, die aktuelle 
+# Gruppen-ID und eine Menge der bereits überprüften Koordinaten.
 def find_all_neighbors(coordinate, cluster_id, checked):
-    # This only happens in the very first time this recursion is called
-    # Get the next cluster id (next slot in the clusters list) and
-    # initialize the cluster
-    if cluster_id is None:
-        cluster_id = len(clusters)
-        clusters.append([])
+    if cluster_id is None:  # passiert nur beim ersten Aufruf der Rekursion
+        cluster_id = len(clusters)  # erhält die nächste Gruppen-ID
+        clusters.append([])  #fügt eine leere Liste (die neue Gruppe) hinzu
      
-    (x, y) = coordinate
-    # Get all neighborings coordinates
+    (x, y) = coordinate  # trennt die Koordinaten in x und y 
+    # neighbors erhält alle möglichen Nachbarkoordinaten
     neighbors = ((x+1, y), (x-1, y), (x, y+1), (x, y-1))
-    # Iterate over everything and check if the neighbor is in the 
-    # list of changed coordinates
-    for neighbor in neighbors:
-        if neighbor in coordinates:
-            # Ignore this node, in case we already checked it
+    
+    # iteriert über alle Nachbarn der Vordergrundkoordinaten
+    for neighbor in neighbors:  
+        # überprüft ob Nachbar in den Vordergrundkoordinaten enthalten ist
+        if neighbor in coordinates:  
+            # ignoriert den Nachbar, wenn er schon überprüft wurde
             if neighbor in checked:
                 continue
 
-            # Push the neighbor coordinate to the current cluster
+            # fügt die Nachbarkoordinate zur aktuellen Gruppe
             clusters[cluster_id].append(neighbor)
-            # Remember that we already checked this node
+            # fügt den Nachbarn zur checked-Menge, um sich zu merken,
+            # dass Nachbar bereits überprüft wurde
             checked.add(neighbor)
-            # We have to check the neighbor's neighbors as well :PP
-            find_all_neighbors(neighbor, cluster_id, checked)
+            # überprüfen des Nachbars Nachbarn (Rekursionsaufruf)
+            find_all_neighbors(neighbor, cluster_id, checked)  
 
-# Iterate through all coordinates until
-checked = set()
-for coordinate in coordinates:
-    # We already checked this coordinate somewhere in the recursive lookup
-    if coordinate in checked:
+checked = set()  # erzeugt eine leere Menge
+for coordinate in coordinates:  # iteriert über alle Vordergrundkoordinaten
+    # ignoriert Koordinate, wenn sie bereits in der Rekursion überprüft wurde
+    if coordinate in checked:  
         continue
-    
+    # ruft die Funktion an der aktuellen Koordinate auf
     find_all_neighbors(coordinate, None, checked)
 
-
-print('Anzahl der Fehler:', len(clusters))
+# Die Länge der Gruppenliste ist die Anzahl der Gruppen
+print('Anzahl der Fehler:', len(clusters))  
 
 plt.show()

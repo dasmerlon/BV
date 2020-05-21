@@ -32,16 +32,16 @@ plt.close('all')
    zumindest recht gut entfernen. 
    Reichen fünf Bilder dafür aus? Probiert es aus!
 """
-bild1 = imread('./serienbild/bild1.png')
-bild2 = imread('./serienbild/bild2.png')
-bild3 = imread('./serienbild/bild3.png')
-bild4 = imread('./serienbild/bild4.png')
-bild5 = imread('./serienbild/bild5.png')
+img1 = imread('./serienbild/bild1.png')
+img2 = imread('./serienbild/bild2.png')
+img3 = imread('./serienbild/bild3.png')
+img4 = imread('./serienbild/bild4.png')
+img5 = imread('./serienbild/bild5.png')
 
-test = 1/5 * bild1 + 1/5 * bild2 + 1/5 * bild3 + 1/5 * bild4 + 1/5 * bild5
+law_ln = 1/5 * img1 + 1/5 * img2 + 1/5 * img3 + 1/5 * img4 + 1/5 * img5
 fig1 = plt.figure(1)
 fig1.suptitle('Mittelung über die Bilder nach dem Gesetz der großen Zahlen')
-plt.imshow(test, cmap='gray')  # 5 Bilder reichen nicht
+plt.imshow(law_ln, cmap='gray')  # 5 Bilder reichen nicht aus
 
 
 """
@@ -51,13 +51,14 @@ plt.imshow(test, cmap='gray')  # 5 Bilder reichen nicht
    Nachbarn! Das Ergebnis soll dabei dem in Abbildung 1b so nahe wie möglich 
    kommen.
 """
-bilder = np.stack((bild1, bild2, bild3, bild4, bild5), axis=2)
-# Ersetzt jeden Pixel durch den Mittelwert der Bilderfolge
-hintergrund = np.median(bilder, axis=2).astype(np.uint8)
+# erzeugt eine Folge der Bilder
+images = np.stack((img1, img2, img3, img4, img5), axis=2)
+# ersetzt jeden Pixel durch den Mittelwert der Bilderfolge
+background = np.median(images, axis=2).astype(np.uint8)
 
 fig2 = plt.figure(2)
 fig2.suptitle('Hintergrundbild')
-plt.imshow(hintergrund, cmap='gray')
+plt.imshow(background, cmap='gray')
 
 
 """
@@ -68,11 +69,13 @@ plt.imshow(hintergrund, cmap='gray')
    müsst ihr selbst ermitteln. Ein perfektes Ergebnis werdet ihr aber 
    vermutlich nicht bekommen, wie auch im Ergebnisbild 1c zu erkennen ist.
 """
-ball1 = (bild1 - hintergrund) > 10
-ball2 = ((bild2 - hintergrund) > 15) * ((bild2 - hintergrund) < 250)
-ball3 = ((bild3 - hintergrund) > 10) * ((bild3 - hintergrund) < 240)
-ball4 = ((bild4 - hintergrund) > 10) * ((bild4 - hintergrund) < 240)
-ball5 = ((bild5 - hintergrund) > 13) * ((bild5 - hintergrund) < 220)
+# erzeugt für jedes Bild eine Vordergrundmaske durch Hintergrundsubtraktion 
+# und unteren und oberen Schwellenwerten
+ball1 = (img1 - background) > 10
+ball2 = ((img2 - background) > 15) * ((img2 - background) < 250)
+ball3 = ((img3 - background) > 10) * ((img3 - background) < 240)
+ball4 = ((img4 - background) > 10) * ((img4 - background) < 240)
+ball5 = ((img5 - background) > 13) * ((img5 - background) < 220)
 
 
 """
@@ -82,22 +85,24 @@ ball5 = ((bild5 - hintergrund) > 13) * ((bild5 - hintergrund) < 220)
    verändert haben, werden im Hintergrundbild durch die entsprechenden Pixel 
    des ersten Einzelbilds ersetzt usw.
 """
-ball1 = np.where(ball1==1, bild1, hintergrund)
-ball2 = np.where(ball2==1, bild2, ball1)
-ball3 = np.where(ball3==1, bild3, ball2)
-ball4 = np.where(ball4==1, bild4, ball3)
-ball5 = np.where(ball5==1, bild5, ball4)
-
+# ersetzt die entsprechenden Pixel des Hintergrunds mit den Vordergrundpixeln 
+# der Vordergrundmasken (also alle Pixel mit dem Wert 1)
+bg1 = np.where(ball1==1, img1, background)
+bg2 = np.where(ball2==1, img2, bg1)
+bg3 = np.where(ball3==1, img3, bg2)
+bg4 = np.where(ball4==1, img4, bg3)
+all_balls = np.where(ball5==1, img5, bg4)
 
 fig3 = plt.figure(3)
 fig3.suptitle('alle Bälle')
-plt.imshow(ball5, cmap='gray')
+plt.imshow(all_balls, cmap='gray')
+
 
 """
 5. Speichert das Ergebnisbild ab. Es sollte in etwa dem in Abbildung 1c 
    entsprechen.
 """
-imsave('./serienbild/alle_baelle.png', ball5)
+imsave('./serienbild/alle_baelle.png', all_balls)
 
 
 """
@@ -108,34 +113,29 @@ Tipp: Nehmt selbst ein Serienfotos oder Einzelfotos auf und
       skimage.color.rgb2gray nutzen und das Ergebnis mit 255 multiplizieren. 
       Originelle Ergebnisse werden in den Lösungsvideos gezeigt.
 """
-hintergrund = (color.rgb2gray(imread('./serienbild2/background.png')) * 255).astype(np.uint8)
-bild1 = (color.rgb2gray(imread('./serienbild2/bild1.png')) * 255).astype(np.uint8)
-bild2 = (color.rgb2gray(imread('./serienbild2/bild2.png')) * 255).astype(np.uint8)
-bild3 = (color.rgb2gray(imread('./serienbild2/bild3.png')) * 255).astype(np.uint8)
-bild4 = (color.rgb2gray(imread('./serienbild2/bild4.png')) * 255).astype(np.uint8)
+# ladet die Bilder als Graustufenbilder in Python
+b0 = (color.rgb2gray(imread('./serienbild2/bild0.png')) * 255).astype(np.uint8)
+b1 = (color.rgb2gray(imread('./serienbild2/bild1.png')) * 255).astype(np.uint8)
+b2 = (color.rgb2gray(imread('./serienbild2/bild2.png')) * 255).astype(np.uint8)
+b3 = (color.rgb2gray(imread('./serienbild2/bild3.png')) * 255).astype(np.uint8)
+b4 = (color.rgb2gray(imread('./serienbild2/bild4.png')) * 255).astype(np.uint8)
 
-arm1 = ((bild1 - hintergrund) > 15) * ((bild1 - hintergrund) < 240)
-arm2 = ((bild2 - hintergrund) > 30) * ((bild2 - hintergrund) < 180)
-arm3 = ((bild3 - hintergrund) > 20) * ((bild3 - hintergrund) < 200)
-arm4 = ((bild4 - hintergrund) > 30) * ((bild4 - hintergrund) < 200)
+# erzeugt für jedes Bild eine Vordergrundmaske
+arm1 = (b1 - b0) > 5
+arm2 = ((b2 - b0) > 30) * ((b2 - b0) < 180)
+arm3 = ((b3 - b0) > 20) * ((b3 - b0) < 200)
+arm4 = ((b4 - b0) > 30) * ((b4 - b0) < 200)
 
-arm1 = np.where(arm1==1, bild1, hintergrund)
-arm2 = np.where(arm2==1, bild2, arm1)
-arm3 = np.where(arm3==1, bild3, arm2)
-arm4 = np.where(arm4==1, bild4, arm3)
+# fügt die Vordergrundmasken und den Hintergrund zusammen
+arm1 = np.where(arm1==1, b1, b0)
+arm2 = np.where(arm2==1, b2, arm1)
+arm3 = np.where(arm3==1, b3, arm2)
+arm4 = np.where(arm4==1, b4, arm3)
 
 fig4 = plt.figure(4)
 fig4.suptitle('Eigene Serienfotos:')
 plt.imshow(arm4, cmap='gray')
 
 plt.show()
-
-
-
-
-
-
-
-
 
 
