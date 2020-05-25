@@ -31,20 +31,53 @@ img1 = imread('./bildverbesserung/bild1.png')
 img2 = imread('./bildverbesserung/bild2.png')
 img3 = imread('./bildverbesserung/bild3.png')
 
+plt.close('all')
+
 """
 1. Verbessert die Sichtbarkeit des linken unteren Bildbereichs in Bild 1 
    und ermittelt, wie viele Poller es am Rande einer kleinen Grüninsel in der 
    unteren linken Bildecke gibt?
 """
 
+beforeAImage = img1
+afterAImage = img1
+
+#Img1Min = np.min(beforeAImage)
+#print(Img1Min)
+
+#Img1Max = np.max(beforeAImage)
+#print(Img1Max)
+
+"""
+gamma correction?
+"""
+
+beforeA = plt.figure(1)
+beforeA.suptitle('Before')
+plt.imshow(beforeAImage, cmap = 'gray', vmin=0, vmax=255)
+
+afterA = plt.figure(2)
+afterA.suptitle("After")
+plt.imshow(afterAImage, cmap = 'gray', vmin=0, vmax=255)
+
+
 """
 2. Sorgt dafür, dass sich die Skyline in Bild 2 besser vom Himmel abhebt.
+"""
+
+
+"""
+power law transformation?
 """
 
 """
 3. Verändert das Bild 3 so, dass in etwa der Bereich der Autobahn in der 
    Bildmitte weiß ist und der Rest des Bildes seine Graufärbung behält.
    Hinweis: Das Ergebnis wird nicht perfekt werden!
+"""
+
+"""
+Intensity Level Slicing!
 """
 
 
