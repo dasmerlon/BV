@@ -44,11 +44,12 @@ Gelöst mit einer Power Law Transformation. Es gibt 8 Poller.
 """
 
 beforeAImage = img1
-afterAImage = img1 ** 1.55
+afterAImage = img1 ** 1.55 #um den contrast zu erhöhen von dem dunklem bereich, benutzten wir eine exponentialfunktion und 
+                           #rechnen jeden pixel hoch einen wert der größer als 1 ist
 
-beforeA = plt.figure(1)
-beforeA.suptitle('Image 1 before gamma correction')
-plt.imshow(beforeAImage, cmap = 'gray', vmin=0, vmax=255)
+#beforeA = plt.figure(1)
+#beforeA.suptitle('Image 1 before gamma correction')
+#plt.imshow(beforeAImage, cmap = 'gray', vmin=0, vmax=255)
 
 afterA = plt.figure(2)
 afterA.suptitle("Image 1 after gamma correction")
@@ -63,27 +64,27 @@ plt.imshow(afterAImage, cmap = 'gray', vmin=0, vmax=255)
 Contrast Stretching/Intensity Slicing
 """
 
-def ContrastStretching(image):
+def ContrastStretching(image): #eine funktion die auf einer pixel per pixel basis jeden wert auf seinen grauwert untersucht und dann entsprechend, contrast erhöht oder verringert
     
     result = np.copy(image)
     for x in range(result.shape[0]):
         for y in range(result.shape[1]):
-            if(result[x,y] < 145):
-                result[x,y] = result[x,y] ** 0.8
+            if(result[x,y] < 145): #unsere skyline liegt ca zwischen 145 und 150
+                result[x,y] = result[x,y] ** 0.8 #hellere werte sollen heller sein
             elif(result[x,y] > 150):
-                result[x,y] = result[x,y] ** 1.05
+                result[x,y] = result[x,y] ** 1.05 #dunklere werte sollen dunkler werden
     return result
 
 beforeBImage = img2
 afterBImageContrastStretching = ContrastStretching(img2)
 
-schwellWert = (beforeBImage > 147) * 255
+schwellWert = (beforeBImage > 147) * 255 #hier einmal noch ein versuch mit intensity level slicing
 
 afterBImage = beforeBImage + schwellWert
 
-beforeB = plt.figure(3)
-beforeB.suptitle('Image 2 Before')
-plt.imshow(beforeBImage, cmap = 'gray', vmin=0, vmax=255)
+#beforeB = plt.figure(3)
+#beforeB.suptitle('Image 2 Before')
+#plt.imshow(beforeBImage, cmap = 'gray', vmin=0, vmax=255)
 
 afterB = plt.figure(4)
 afterB.suptitle("Image 2 with Intensity Level Slicing")
@@ -106,13 +107,14 @@ Gelöst mit Intensity Level Slicing!
 
 beforeCImage = img3
 
-schwellWert = (beforeCImage > 104) * 255
+schwellWert = (beforeCImage > 104) * 255 #wir machen eine maske von allen pixel über dem grauwert 104 und machen die matrix vollständig weiß
 
-afterCImage = beforeCImage + schwellWert
+afterCImage = beforeCImage + schwellWert #indem wir die maske addieren sorgen wir dafür das alle richtigen pixel automatisch den wert 255
+                                         #im fertigen bild haben
 
-beforeC = plt.figure(6)
-beforeC.suptitle('Image 3 before Intensity Slicing')
-plt.imshow(beforeCImage, cmap = 'gray', vmin=0, vmax=255)
+#beforeC = plt.figure(6)
+#beforeC.suptitle('Image 3 before Intensity Slicing')
+#plt.imshow(beforeCImage, cmap = 'gray', vmin=0, vmax=255)
 
 afterC = plt.figure(7)
 afterC.suptitle("Image 3 after Intensity Slicing")
