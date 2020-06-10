@@ -1,4 +1,9 @@
+# -*- coding: utf-8 -*-
 """
+@author: Merle Hoffmann (7031673), 
+         Abdulssatar Khateb (6976879), 
+         Felix Swimmer (7162123)
+            
 Aufgabe 04  Umgang mit Farbbildern in Python
 
 4.1
