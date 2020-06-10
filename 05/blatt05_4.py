@@ -3,7 +3,7 @@
 @author: Merle Hoffmann (7031673), 
          Abdulssatar Khateb (6976879), 
          Felix Swimmer (7162123)
-            
+         
 Aufgabe 04  Umgang mit Farbbildern in Python
 
 4.1
@@ -23,7 +23,8 @@ img = imread('mandrillFarbe.png')
 Invertiert das Bild, indem ihr jeden Farbwert einzeln im RGB-Modell invertiert. Welche Farben
 des Ursprungsbildes werden dabei auf welche Farben im neuen Bild abgebildet?
 """
-# Es wird die Rotfarbe auf Blaufarbe abgebildet. Grün wird auf Grünabgebildet 
+# Es wird die Rotfarbe auf Blaufarbe und die Blaufarbe auf Rotfarbe 
+#abgebildet. Grün wird auf Grünabgebildet 
 imgInvert = np.copy(img)
 for x in range(img.shape[0]):
     for y in range(img.shape[1]):
@@ -32,7 +33,11 @@ for x in range(img.shape[0]):
         invert_g = 255 - g
         invert_b = 255 - b
         imgInvert[x,y,:] = invert_r,invert_g,invert_b
-plt.imshow(imgInvert)
+#plt.imshow(imgInvert)
+
+
+
+
 #imgInvert1 = 255 - img    gleiche Ergebinss mit Broadcasting
 
 
@@ -58,7 +63,8 @@ imgB = img[:,:,2]
 Setzt nun die drei Farbkanäle wieder zusammen zu einem RGB-Bild. Tauscht dabei aber die
 Kanäle Rot und Blau. Wie verändert sich das Bild und warum ist das so?
 """
-
+#Das Bild verändert sich da wir die Farbkanäle gewechslt von RGB zu BGR haben,
+# und dies führt zur Änderung an der Farbe.
 imgBR = np.dstack((imgB,imgG,imgR))
 #plt.imshow(imgBR)
 
@@ -85,11 +91,11 @@ Helligkeit vom HSI-Farbraum unterscheidet.
 """
 
 
-#Die Sättigung des Bildes auf 1 stellen
+#Die Sättigung des Bildes auf 1 stellen. 
 hsvS1 = color.rgb2hsv(img)
 hsvS1[:,:,1] = 1
-img = color.hsv2rgb(hsvS1)
-plt.imshow(img)
+#img = color.hsv2rgb(img)
+#plt.imshow(img)
 
 
 #Die Sättigung des Bildes auf 0 stellen
@@ -109,8 +115,10 @@ haben diese Veränderungen?
 
 
 hsvHue = color.rgb2hsv(img)
-hsvHue[:,:,0] = 60 #120,240
+hsvHue[:,:,0] = 60  #120,240
 img=color.hsv2rgb(hsvHue)
 plt.imshow(img)
+
+
 
 
