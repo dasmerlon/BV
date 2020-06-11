@@ -7,7 +7,7 @@
 Aufgabe 04  Umgang mit Farbbildern in Python
 
 4.1
-Ladet das BildmandrillFarbe.pngaus dem Moodle und zeigt es an
+Ladet das BildmandrillFarbe.png aus dem Moodle und zeigt es an
 """
 import numpy as np
 import matplotlib.pyplot as plt
