@@ -14,7 +14,7 @@ zwischen Farbräumen für ein ganzes Bild durchführen:
 
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage.io import imread
+from skimage.io import imread, imsave
 import math
 
 
@@ -51,27 +51,26 @@ def RGBtoHSI(imgRGB):
     
     imgHSI = imgRGB
     
-    for x in range(imgRGB.shape[0]):  # Schleife über die Zeilen
+    for x in range(imgRGB.shape[0]):
         for y in range(imgRGB.shape[1]):
             
-            TopEquation = 1/2 * ((imgR[x,y]-imgG[x,y]) + (imgR[x,y] - imgB[x,y]))
+            TopEquation = 1/2 * ((imgR[x,y] - imgG[x,y]) + (imgR[x,y] - imgB[x,y]))
             BottomEquation = ((imgR[x,y] - imgG[x,y]) ** 2 + ((imgR[x,y] - imgB[x,y]) * (imgG[x,y] - imgB[x,y]))) ** (1/2)
-            
-            theta = math.acos(TopEquation/BottomEquation)
+            theta = math.degrees(math.acos(TopEquation/BottomEquation))
             
             if(imgB[x,y] <= imgG[x,y]):
                 H = theta / 360 #normieren von 0 bis 1!
             else:
                 H = (360 - theta) / 360
             
-            S = 1 - (3 * min(imgR[x,y],imgG[x,y],imgB[x,y]/(imgR[x,y] + imgG[x,y] + imgB[x,y])))
-            I = (1/3) * (imgR[x,y] + imgB[x,y] + imgG[x,y])
+            S = 1 - ((3 * min(imgR[x,y],imgG[x,y],imgB[x,y]))/(imgR[x,y] + imgG[x,y] + imgB[x,y]))
+            I = (1/3) * (imgR[x,y] + imgG[x,y] + imgB[x,y])
             
             imgHSI[x,y,0] = H
             imgHSI[x,y,1] = S
             imgHSI[x,y,2] = I
+            
     return imgHSI
-
 
 """
 HSI zu RGB
@@ -80,7 +79,7 @@ def HSItoRGB(imgHSI):
     
     imgHSI = scale(imgHSI, 1)
     
-    imgH = imgHSI[:,:,0]
+    imgH = imgHSI[:,:,0] * 360
     imgS = imgHSI[:,:,1]
     imgI = imgHSI[:,:,2]
     
@@ -88,31 +87,41 @@ def HSItoRGB(imgHSI):
     
     for x in range(imgHSI.shape[0]):
         for y in range(imgHSI.shape[1]):
-            if(imgH[x,y]>= 0 and imgH[x,y]<(1/3)):
-                B = imgI[x,y] * (1-imgS[x,y])
-                R = imgI[x,y] * (1 + ((imgS[x,y] * math.cos(imgH[x,y]))/(math.cos(60-(imgH[x,y] * 360))))) #H zwischen 0 und 1 muss zu grad werden
+            if(imgH[x,y] >= 0 and imgH[x,y]<120):
+                
+                #RG Sector
+                
+                B = imgI[x,y] * (1 - imgS[x,y])
+                R = imgI[x,y] * (1 + ((imgS[x,y] * math.degrees(math.cos(imgH[x,y]))) / (math.degrees(math.cos(60-imgH[x,y])))))
                 G = (3 * imgI[x,y]) - (R + B)
                 
                 imgRGB[x,y,0] = R
                 imgRGB[x,y,1] = G
                 imgRGB[x,y,2] = B
                 
-            elif(imgH[x,y]>= (1/3) and imgH[x,y]<(2/3)):
+            elif(imgH[x,y]>= 120 and imgH[x,y]<240):
+                
+                #GB Sector
+                
+                
                 R = imgI[x,y] * (1-imgS[x,y])
-                G = imgI[x,y] * (1 + ((imgS[x,y] * math.cos(imgH[x,y]))/(math.cos(60-(imgH[x,y] * 360)))))
+                G = imgI[x,y] * (1 + ((imgS[x,y] * math.degrees(math.cos(imgH[x,y] - 120)))/(math.degrees(math.cos(60-(imgH[x,y] - 120))))))
                 B = (3 * imgI[x,y]) - (R + G)
                 
                 imgRGB[x,y,0] = R
                 imgRGB[x,y,1] = G
                 imgRGB[x,y,2] = B
-            else:
+                
+            elif(imgH[x,y]>= 240 and imgH[x,y]<360):
+                
                 G = imgI[x,y] * (1-imgS[x,y])
-                B = imgI[x,y] * (1 + ((imgS[x,y] * math.cos(imgH[x,y]))/(math.cos(60-(imgH[x,y] * 360)))))
+                B = imgI[x,y] * (1 + ((imgS[x,y] * math.degrees(math.cos(imgH[x,y] - 240)))/(math.degrees(math.cos(60-(imgH[x,y] - 240))))))
                 R = (3 * imgI[x,y]) - (G + B)
                 
                 imgRGB[x,y,0] = R
                 imgRGB[x,y,1] = G
                 imgRGB[x,y,2] = B
+                
     return imgRGB
 
 
@@ -126,8 +135,9 @@ plt.close('all')
 mandrill = imread('./mandrillFarbe.png')
 
 imgHSI = RGBtoHSI(mandrill)
-imgRGB = HSItoRGB(imgHSI) #Problem! image wird irgendwie als NaN gelesen
-print(imgRGB)
+imsave('mandrillHSI.png',imgHSI)
+mandrill2 = imread('./mandrillHSI.png')
+imgRGB = HSItoRGB(mandrill2) 
 
 plt.imshow(imgRGB)
 
