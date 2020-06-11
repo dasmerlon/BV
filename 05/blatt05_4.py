@@ -53,9 +53,10 @@ imgR = img[:,:,0]
 imgG = img[:,:,1]
 imgB = img[:,:,2]
 
-#plt.imshow(imgR)
-#plt.imshow(imgG)
-#plt.imshow(imgB)
+#plt.imshow(imgR, cmap='gray', vmin=0, vmax=255) #Rot töne vor allem auf der nase und in den augen
+#plt.imshow(imgG, cmap='gray', vmin=0, vmax=255) #Grün töne vor allem neben der nase und im mund bereich
+#plt.imshow(imgB, cmap='gray', vmin=0, vmax=255) #Blau Töne überlappen mit den grün tönen am meisten, gar nicht in den augen vorhanden
+
 
 
 """
@@ -64,9 +65,9 @@ Setzt nun die drei Farbkanäle wieder zusammen zu einem RGB-Bild. Tauscht dabei 
 Kanäle Rot und Blau. Wie verändert sich das Bild und warum ist das so?
 """
 #Das Bild verändert sich da wir die Farbkanäle gewechslt von RGB zu BGR haben,
-# und dies führt zur Änderung an der Farbe.
-imgBR = np.dstack((imgB,imgG,imgR))
-#plt.imshow(imgBR)
+# und dies führt zur Änderung an der Farbe. Am auffälligsten ist die Nase und Augen die stark blau werden
+imgBGR = np.dstack((imgB,imgG,imgR))
+#plt.imshow(imgBGR)
 
 """
 4.5
@@ -75,7 +76,7 @@ Pixel als Mittelwert der drei Farbwerte an dieser Position berechnet.
 """
 
 imgGray = np.mean(img,axis=2)
-#plt.imshow(imgGray)
+#plt.imshow(imgGray, cmap='gray', vmin=0, vmax=255)
 
 
 """
@@ -94,15 +95,18 @@ Helligkeit vom HSI-Farbraum unterscheidet.
 #Die Sättigung des Bildes auf 1 stellen. 
 hsvS1 = color.rgb2hsv(img)
 hsvS1[:,:,1] = 1
-#img = color.hsv2rgb(img)
-#plt.imshow(img)
+imgS1 = color.hsv2rgb(img)
+#plt.imshow(imgS1)
 
+#Alle Farben im Bild werden noch stärker
 
 #Die Sättigung des Bildes auf 0 stellen
 hsvS0 = color.rgb2hsv(img)
-hsvS0[:,:,1]= 0
-#img = color.hsv2rgb(hsvS0)
-#plt.imshow(img)
+hsvS0[:,:,1] = 0
+imgS0 = color.hsv2rgb(hsvS0)
+#plt.imshow(imgS0)
+
+#Das Bild wird zu grayscale
 
 
 """
@@ -115,10 +119,15 @@ haben diese Veränderungen?
 
 
 hsvHue = color.rgb2hsv(img)
-hsvHue[:,:,0] = 60  #120,240
+hsvHue[:,:,0] += 60 #120, 240
 img=color.hsv2rgb(hsvHue)
 plt.imshow(img)
 
+#Der Effekt ist das alle Farben verschoben werden
+
+#Bei 60: Nase wird ein Neon-Grün, der Bereich um die Nase herum wird Pink, die Augen ebenfalls Grün, das Fell kriegt eine cyane Farbe
+#Bei 120: Nase wird zu einem blauen Lila, der Bereich um die Nase wird zu einem grünen Gelb, das Fell wird pink, die Augen sind lila
+#Bei 240: Gleich wie 120 Grad
 
 
 
