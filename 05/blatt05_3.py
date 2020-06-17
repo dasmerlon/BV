@@ -112,7 +112,9 @@ def HSItoRGB(imgHSI):
                 imgRGB[x,y,1] = G
                 imgRGB[x,y,2] = B
                 
-            elif(imgH[x,y]>= 240 and imgH[x,y]<360):
+            else:
+                
+                #BR Sector
                 
                 G = imgI[x,y] * (1-imgS[x,y])
                 B = imgI[x,y] * (1 + ((imgS[x,y] * math.degrees(math.cos(imgH[x,y] - 240)))/(math.degrees(math.cos(60-(imgH[x,y] - 240))))))
@@ -121,7 +123,6 @@ def HSItoRGB(imgHSI):
                 imgRGB[x,y,0] = R
                 imgRGB[x,y,1] = G
                 imgRGB[x,y,2] = B
-                
     return imgRGB
 
 
