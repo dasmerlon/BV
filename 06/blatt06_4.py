@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage.io import imread, imsave
+
 """
 
 @author: Merle Hoffmann (7031673), 
@@ -24,9 +28,23 @@ normierte Histogramm über die Funktion numpy.histogram(). Plottet zudem jeweils
 mit Hilfe der Funktion matplotlib.pyplot.hist().
 """
 
+plt.close('all')
 
+bild1 = imread('bildverbesserung/bild1.png')
+histogram1 = np.histogram(bild1, bins = 256, range = (0,256), density = True)
 
+bild2 = imread('bildverbesserung/bild2.png')
+histogram2 = np.histogram(bild1, bins = 256, range = (0,256), density = True)
 
+plt.figure(1)
+plt.hist(bild1.flatten(), bins = 256, range = (0,256), density = True)
+plt.hist(histogram1, bins = 256, range = (0,256), density = True)
+#plt.imshow(bild1, cmap='gray', vmin=0, vmax=255)
+
+plt.figure(2)
+plt.hist(bild2.flatten(), bins = 256, range = (0,256), density = True)
+plt.hist(histogram2, bins = 256, range = (0,256), density = True)
+#plt.imshow(bild2, cmap='gray', vmin=0, vmax=255)
 
 
 """
@@ -42,7 +60,25 @@ normierten Histogramme. Was hat sich verändert? Zeigt auch die jeweiligen Ergeb
 """
 
 
+def EqualizeHistogram(histogram):
+    eqHistogram = histogram
+    
+    for i in range(0,255):
+        summe = 0
+        for j in range(i,255):
+            summe += histogram[0][j]
+        eqHistogram[0][i] = 255 * summe
+        
+    return eqHistogram
 
+
+plt.figure(3)
+normiertHist1 = EqualizeHistogram(histogram1)
+plt.hist(normiertHist1, bins = 256, range = (0,256), density = True)
+
+plt.figure(4)
+normiertHist2 = EqualizeHistogram(histogram2)
+plt.hist(normiertHist2, bins = 256, range = (0,256), density = True)
 
 
 
