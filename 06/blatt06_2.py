@@ -24,7 +24,29 @@ dem Moodle.
 Tipp: Zur Abschätzung der Richtigkeit euer Ergebnisse, nicht zur Berechnung, könnt ihr das
 Resultat der Funktion numpy.var(img) nutzen.
 """
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage.io import imread, imsave
 
+img = imread('mandrill.png')
+img1 = np.copy(img)
+
+def varMit_2(img):
+    m= 0
+    row= img.shape[0]
+    column=img.shape[1]
+    for x in range(row) :
+        for y in range(column):
+            m += img[x,y]
+    m = m/(row * column)
+    v = 0
+    for x in range(row):
+        for y in range(column):
+            v = v + ((img[x,y]-m)*(img[x,y]-m) / (row * column))
+    return v 
+
+# v = np.var(img) hier brauchen wir nicht das Bild zu einem Grauenstufen 
+# Bild zu wechseln.
 
 
 """
@@ -34,6 +56,24 @@ zu iterieren, und nutzt zur Berechnung erneut keine Funktionen wie np.mean() ode
 Testet eure Funktion wieder am Testbild mandrill.png.
 """
 
+
+def varMit_1(img):
+    m= 0
+    row = img.shape[0]
+    column =img.shape[1]
+    for x in range(row) :
+        for y in range(column):
+            m += img[x,y]
+    m = m/(row * column)
+    v = 0
+    for x in range(row):
+        for y in range(column):
+            v = v + (img[x,y] * img[x,y])
+    v = v / (row * column)
+    v = v - (m * m)
+    return v 
+
+     
 
 
 """
