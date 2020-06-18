@@ -2,7 +2,8 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage.io import imread, imsave
+from skimage.io import imread
+import math
 
 """
 
@@ -34,7 +35,7 @@ bild1 = imread('bildverbesserung/bild1.png')
 histogram1 = np.histogram(bild1, bins = 256, range = (0,256), density = True)
 
 bild2 = imread('bildverbesserung/bild2.png')
-histogram2 = np.histogram(bild1, bins = 256, range = (0,256), density = True)
+histogram2 = np.histogram(bild2, bins = 256, range = (0,256), density = True)
 
 plt.figure(1)
 plt.hist(bild1.flatten(), bins = 256, range = (0,256), density = True)
@@ -60,27 +61,38 @@ normierten Histogramme. Was hat sich verändert? Zeigt auch die jeweiligen Ergeb
 """
 
 
-def EqualizeHistogram(histogram):
-    eqHistogram = histogram
-    
-    for i in range(0,255):
+def EqualizeHistogram(histogram, image):
+    referenceHistogram = histogram
+    transformFunc = np.array(range(0,256))
+    print(referenceHistogram[0][201])
+    for i in range(0,256):
         summe = 0
-        for j in range(i,255):
-            summe += histogram[0][j]
-        eqHistogram[0][i] = 255 * summe
+        for j in range(0,i):
+            summe += referenceHistogram[0][j]
+        transformFunc[i] = round(255 * summe)
+        histogram[0][i] = transformFunc[i]
         
-    return eqHistogram
+    for x in range(image.shape[0]):
+        for y in range(image.shape[1]):
+            image[x,y] = transformFunc[image[x,y]]
+    return transformFunc
 
 
 plt.figure(3)
-normiertHist1 = EqualizeHistogram(histogram1)
-plt.hist(normiertHist1, bins = 256, range = (0,256), density = True)
+eq_bild1 = bild1.copy()
+transformFunction1 = EqualizeHistogram(histogram1, eq_bild1)
+plt.hist(histogram1, bins = 256, range = (0,256), density = True)
 
 plt.figure(4)
-normiertHist2 = EqualizeHistogram(histogram2)
-plt.hist(normiertHist2, bins = 256, range = (0,256), density = True)
+eq_bild2 = bild2.copy()
+transformFunction2 = EqualizeHistogram(histogram2, eq_bild2)
+plt.hist(histogram2, bins = 256, range = (0,256), density = True)
 
+plt.figure(5)
+plt.imshow(eq_bild1, cmap = 'gray')
 
+plt.figure(6)
+plt.imshow(eq_bild2, cmap = 'gray')
 
 
 """
@@ -98,3 +110,34 @@ Zum Vergleich bietet es sich an, die
 jeweilige Transformationsfunktion sowie die jeweilige Intensitätstransformationen zu plotten und
 die Kurvenformen zu vergleichen.
 """
+
+def IntensityTransform1(image):
+    return ((image ** 0.2) * (255 ** 0.8))
+
+def IntensityTransform2(image):
+    return (255 * (math.e ** (image/255) * 16 - 10))/ (1 + math.e ** (image/255) * 16 - 10)
+
+
+plt.figure(7)
+afterImage1 = IntensityTransform1(bild1)
+plt.imshow(afterImage1, cmap = 'gray')
+
+plt.figure(8)
+afterImage2 = IntensityTransform2(bild2)
+plt.imshow(afterImage2, cmap = 'gray')
+
+plt.figure(9)
+plt.plot(range(0,256), list(map(IntensityTransform1,range(0,256))))
+plt.show()
+
+plt.figure(10)
+plt.plot(range(0,256), list(map(IntensityTransform2,range(0,256))))
+plt.show()
+
+plt.figure(11)
+plt.plot(range(len(transformFunction1)), transformFunction1)
+plt.show()
+
+plt.figure(12)
+plt.plot(range(len(transformFunction2)), transformFunction2)
+plt.show()
