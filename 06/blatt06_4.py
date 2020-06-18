@@ -64,14 +64,13 @@ normierten Histogramme. Was hat sich verändert? Zeigt auch die jeweiligen Ergeb
 def EqualizeHistogram(histogram, image):
     referenceHistogram = histogram
     transformFunc = np.array(range(0,256))
-    print(referenceHistogram[0][201])
-    for i in range(0,256):
-        summe = 0
-        for j in range(0,i):
-            summe += referenceHistogram[0][j]
-        transformFunc[i] = round(255 * summe)
+    #print(referenceHistogram[0][0] * 255)
+    
+    transformFunc[0] = referenceHistogram[0][0] * 255
+    for i in range(1,256):
+        transformFunc[i] = transformFunc[i-1] + referenceHistogram[0][i] * 255
         histogram[0][i] = transformFunc[i]
-        
+       
     for x in range(image.shape[0]):
         for y in range(image.shape[1]):
             image[x,y] = transformFunc[image[x,y]]
